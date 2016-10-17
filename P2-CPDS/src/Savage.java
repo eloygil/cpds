@@ -1,7 +1,7 @@
 public class Savage extends Thread {
-	BadPotTwo pot;
+	PotNoWait pot;
 
-	public Savage(BadPotTwo pot) {
+	public Savage(PotNoWait pot) {
 		this.pot = pot;
 	}
 
