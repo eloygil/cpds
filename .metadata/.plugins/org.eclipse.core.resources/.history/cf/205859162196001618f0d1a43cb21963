@@ -1,0 +1,30 @@
+public class Person extends Thread {
+	Account account;
+
+	public Person(Account account) {
+		this.account = account;
+	}
+
+	public void run() {
+		while (true) {
+			try {
+				//We assume that a person withdraws more times than deposits
+				System.out.println(Thread.currentThread().getName() + " wants to deposit money");
+				Thread.sleep(200);
+				account.deposit();
+				System.out.println(Thread.currentThread().getName() + " wants to withdraw money");
+				Thread.sleep(200);
+				account.withdraw();
+				System.out.println(Thread.currentThread().getName() + " wants to withdraw money");
+				Thread.sleep(200);
+				account.withdraw();
+				System.out.println(Thread.currentThread().getName() + " wants to withdraw money");
+				Thread.sleep(200);
+				account.withdraw();
+			} catch (InterruptedException e) {
+			}
+			;
+		}
+	}
+
+}
