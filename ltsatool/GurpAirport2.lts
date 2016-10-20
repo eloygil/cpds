@@ -1,0 +1,14 @@
+const False = 0
+const True = 1
+const RMAX = 2
+const FMAX = 3
+range Bool = False..True
+range R = 1..RMAX
+range F = 1..FMAX
+FLIGHT = (request.runway -> WAIT),
+WAIT = (free.runway[i:R] -> take.off.done[i] -> FLIGHT).
+CONTROL_RUNWAY = CONTROL[True],
+CONTROL[free: Bool] = (when (free) free.runway -> CONTROL[False] 
+					 | take.off.done -> CONTROL[True]).
+||CONTROL=(r[R]:CONTROL_RUNWAY)
+||AIRPORT = (f[F]:FLIGHT || f[F]::CONTROL) / {r[R]
