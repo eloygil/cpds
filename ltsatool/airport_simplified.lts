@@ -1,0 +1,44 @@
+//valid only for RMAX == 2
+
+const False = 0
+const True = 1
+
+const RMAX = 2
+const FMAX = 3
+
+range Bool = False..True
+range R = 1..RMAX
+range F = 1..FMAX
+
+FLIGHT = (request.runway -> WAIT),
+WAIT = (free.runway[i:R] -> take.off.done[i] -> FLIGHT).
+
+CONTROL = CONTROL[True][True],
+CONTROL[free_1:Bool][free_2:Bool] = (when(free_1) free.runway[1] -> CONTROL[False][free_2]
+                                   |when(free_2) free.runway[2] -> CONTROL[free_1][False]
+                                   |take.off.done[1] -> CONTROL[True][free_2]
+                                   |take.off.done[2] -> CONTROL[free_1][True]
+                                   ).
+
+||AIRPORT = (f[F]:FLIGHT || f[F]::CONTROL).
+
+property WRONG_MUTEX = (f[n:F].free.runway[k:R] -> f[n].take.off.done[k] -> WRONG_MUTEX).
+
+//check that AIRPORT does not satisfy WRONG_MUTEX. See the details using the check button
+
+||AIRPORT_WRONG_MUTEX = (AIRPORT||WRONG_MUTEX).
+
+//right version for MUTEX
+
+property MUTEX_1 = (f[n:F].free.runway[1] -> f[n].take.off.done[1] -> MUTEX_1).
+property MUTEX_2 = (f[n:F].free.runway[2] -> f[n].take.off.done[2] -> MUTEX_2).
+
+||MUTEX = (MUTEX_1 || MUTEX_2).
+
+//Now check that everything is ok
+
+||AIRPORT_MUTEX = (AIRPORT || MUTEX).
+
+||STRESS_AIRPORT = AIRPORT << {f[F].request.runway}.
+
+progress TAKE_OFF = {f[1].take.off.done[R]} //it is indiferent f[1] from any other flight
