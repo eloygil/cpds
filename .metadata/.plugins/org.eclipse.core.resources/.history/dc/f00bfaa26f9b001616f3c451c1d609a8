@@ -1,4 +1,3 @@
-//Albert Cerezo & Eloy Gil
 public class Flags {
 	
 private boolean flag_alice;

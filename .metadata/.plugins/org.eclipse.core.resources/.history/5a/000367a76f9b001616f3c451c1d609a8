@@ -1,4 +1,3 @@
-//Albert Cerezo & Eloy Gil
 public class Neighbor extends Thread {
 	
 	private Flags flags;
