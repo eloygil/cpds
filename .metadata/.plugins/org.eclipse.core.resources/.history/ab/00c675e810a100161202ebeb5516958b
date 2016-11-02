@@ -1,0 +1,39 @@
+//Albert Cerezo & Eloy Gil
+
+public class Neighbor extends Thread {
+	
+	private Vars vars;
+	
+	public Neighbor(Vars vars) {
+		this.vars = vars;
+	}
+	
+	public void run() {
+		String name = Thread.currentThread().getName();
+		
+		//We should check if we have to compare neighbor 1 with turn 2
+		// else the neighbor 2 has to compare with turn 1
+		int compare_turn;
+		if(name.equals("alice")) compare_turn = 2;
+		else compare_turn = 1;
+		
+		while (true) {
+			try {
+				System.out.println("try again, my name is: "+ name);
+				Thread.sleep((int)(200*Math.random()));
+				vars.set_true(name);
+				vars.set_turn(name);
+				//To model greedy uncomment the next sleep and comment the previous sleep 
+				//Thread.sleep((int)(200*Math.random()));
+				while (vars.query_flag(name) && vars.get_turn() == compare_turn) {};
+				System.out.println(name + " enter");
+				System.out.println(name + " pick berries");
+				Thread.sleep(400);
+				System.out.println(name + " exits");
+				Thread.sleep((int)(200*Math.random()));
+				vars.set_false(name);
+			}
+			catch (InterruptedException e) {};
+		}
+	}
+}
